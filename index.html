@@ -271,7 +271,7 @@ function previewApporteur(){
   const code = document.getElementById('code_apporteur').value;
   const prev = document.getElementById('apporteur-preview');
   const a = apporteurs.find(x=>x.code===code);
-  if(a){ prev.textContent = '✓ Apporteur : ' + a.nom; prev.classList.add('visible'); }
+ 
   else { prev.classList.remove('visible'); }
   err('code_apporteur','');
 }
