@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dépôt Bar 174 — Rénovation d'Ampleur CEE</title>
+
+<!-- SEO / WhatsApp / Facebook -->
+<meta name="description" content="Déposez votre dossier de rénovation énergétique d'ampleur BAR-TH-174. Isolation, audit énergétique, gain ≥ 2 classes DPE.">
+<meta property="og:title" content="BAR-TH-174 · Dépôt de dossier CEE">
+<meta property="og:description" content="Rénovation d'ampleur — Isolation + Audit énergétique. Déposez votre dossier en ligne.">
+<meta property="og:image" content="og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<link rel="icon" type="image/png" href="favicon.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --g1:#0a2e1a; --g2:#1a5c35; --g3:#2d8a52;
+  --gold-light:#e8b96a;
+  --cream:#f4efe6; --cream2:#ece5d8;
+  --white:#ffffff; --text:#1a2420; --muted:#5a6e62;
+  --border:#cdd9d2; --error:#b83232; --radius:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Epilogue',sans-serif;background:var(--cream);color:var(--text);min-height:100vh;}
+
+.hero{background:linear-gradient(150deg,var(--g1) 0%,var(--g2) 50%,var(--g3) 100%);padding:64px 24px 100px;position:relative;overflow:hidden;}
+.hero::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:70px;background:var(--cream);clip-path:ellipse(55% 100% at 50% 100%);}
+.noise{position:absolute;inset:0;opacity:0.035;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px;}
+.hero-inner{max-width:700px;margin:0 auto;position:relative;z-index:1;animation:fadeUp .7s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.tag{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.9);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:22px;}
+.tag-dot{width:6px;height:6px;background:var(--gold-light);border-radius:50%;animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,3.4rem);font-weight:800;color:#fff;line-height:1.08;letter-spacing:-1px;margin-bottom:18px;}
+h1 em{color:var(--gold-light);font-style:normal;}
+.hero-sub{color:rgba(255,255,255,.75);font-size:16px;line-height:1.65;max-width:520px;margin-bottom:36px;}
+.info-pills{display:flex;gap:12px;flex-wrap:wrap;}
+.pill{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.85);font-size:13px;font-weight:500;padding:8px 14px;border-radius:30px;}
+
+.form-wrap{max-width:700px;margin:0 auto;padding:40px 24px 80px;}
+.step-label{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--g3);margin-bottom:5px;}
+.step-title{font-family:'Syne',sans-serif;font-size:clamp(1.4rem,3vw,1.9rem);font-weight:700;color:var(--g1);margin-bottom:32px;}
+
+.card{background:var(--white);border-radius:20px;padding:32px;margin-bottom:18px;border:1px solid rgba(0,0,0,.06);box-shadow:0 2px 20px rgba(10,46,26,.06);animation:fadeUp .5s ease both;}
+.card:nth-child(2){animation-delay:.05s}.card:nth-child(3){animation-delay:.1s}.card:nth-child(4){animation-delay:.15s}.card:nth-child(5){animation-delay:.2s}.card:nth-child(6){animation-delay:.25s}
+.card-head{display:flex;align-items:center;gap:12px;margin-bottom:26px;padding-bottom:18px;border-bottom:1px solid var(--cream2);}
+.cicon{width:38px;height:38px;background:linear-gradient(135deg,var(--g2),var(--g3));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0;}
+.ctitle{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:var(--g1);}
+.csub{font-size:12px;color:var(--muted);margin-top:1px;}
+
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.s2{grid-column:span 2;}
+@media(max-width:520px){.g2{grid-template-columns:1fr}.s2{grid-column:span 1}.card{padding:22px 18px}}
+
+.f{display:flex;flex-direction:column;gap:5px;}
+label.lbl{font-size:12.5px;font-weight:600;color:var(--muted);letter-spacing:.3px;}
+label.lbl .r{color:var(--g3);}
+input,select{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:10px;font-family:'Epilogue',sans-serif;font-size:14.5px;color:var(--text);background:var(--white);transition:border-color .18s,box-shadow .18s;outline:none;-webkit-appearance:none;}
+input:focus,select:focus{border-color:var(--g3);box-shadow:0 0 0 3px rgba(45,138,82,.12);}
+input.err,select.err{border-color:var(--error)!important;}
+select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235a6e62' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:34px;}
+.ferr{font-size:11.5px;color:var(--error);min-height:16px;}
+
+.radio-row{display:flex;gap:10px;flex-wrap:wrap;}
+.rl{flex:1;min-width:130px;display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;font-size:13.5px;font-weight:500;color:var(--muted);transition:all .18s;user-select:none;}
+.rl:hover{border-color:var(--g3);color:var(--g2);}
+.rl.on{border-color:var(--g2);background:rgba(45,138,82,.07);color:var(--g2);font-weight:600;}
+.rl input{display:none;}
+.rdot{width:15px;height:15px;border:2px solid currentColor;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.rl.on .rdot::after{content:'';width:7px;height:7px;background:var(--g2);border-radius:50%;}
+
+.gestes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+@media(max-width:400px){.gestes-grid{grid-template-columns:1fr}}
+.gc{position:relative;cursor:pointer;}
+.gc input{position:absolute;opacity:0;width:0;height:0;}
+.gi{display:flex;flex-direction:column;align-items:center;gap:7px;padding:16px 10px;border:2px solid var(--border);border-radius:var(--radius);text-align:center;transition:all .18s;background:var(--white);user-select:none;}
+.gc:hover .gi{border-color:var(--g3);background:rgba(45,138,82,.03);}
+.gc input:checked + .gi{border-color:var(--g2);background:rgba(45,138,82,.08);}
+.gico{font-size:26px;}.gnm{font-family:'Syne',sans-serif;font-size:12.5px;font-weight:700;color:var(--g1);line-height:1.2;}.gdesc{font-size:11px;color:var(--muted);line-height:1.3;}
+.gchk{width:18px;height:18px;border:2px solid var(--border);border-radius:5px;display:flex;align-items:center;justify-content:center;transition:all .18s;margin-top:3px;}
+.gc input:checked + .gi .gchk{background:var(--g2);border-color:var(--g2);}
+.gc input:checked + .gi .gchk::after{content:'✓';color:#fff;font-size:11px;font-weight:700;}
+.gcounter{font-size:12px;color:var(--muted);margin-top:10px;font-style:italic;}
+.gcounter.ok{color:var(--g2);font-weight:600;font-style:normal;}
+
+.dropzone{border:2px dashed var(--border);border-radius:var(--radius);padding:26px 20px;text-align:center;cursor:pointer;transition:all .2s;background:#fafcf9;position:relative;}
+.dropzone:hover,.dropzone.over{border-color:var(--g3);background:rgba(45,138,82,.04);}
+.dropzone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;border:none;padding:0;}
+.dico{font-size:30px;margin-bottom:8px;}.dtxt{font-size:13.5px;font-weight:500;color:var(--muted);margin-bottom:3px;}.dhint{font-size:11.5px;color:#aab5ae;}
+.flist{margin-top:12px;display:flex;flex-direction:column;gap:7px;}
+.fitem{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:rgba(45,138,82,.07);border-radius:8px;font-size:12.5px;color:var(--g1);}
+.frem{cursor:pointer;color:var(--error);font-size:15px;font-weight:700;background:none;border:none;padding:0 3px;line-height:1;}
+.progress-wrap{margin-top:14px;display:none;}
+.progress-label{font-size:12px;color:var(--muted);margin-bottom:6px;}
+.pbar-track{height:6px;background:var(--cream2);border-radius:10px;overflow:hidden;}
+.pbar-fill{height:100%;background:linear-gradient(90deg,var(--g2),var(--g3));border-radius:10px;transition:width .3s;width:0%;}
+
+.btn-submit{width:100%;padding:15px;background:linear-gradient(135deg,var(--g1),var(--g2));color:#fff;border:none;border-radius:var(--radius);font-family:'Syne',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:all .22s;position:relative;overflow:hidden;}
+.btn-submit::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,var(--g2),var(--g3));opacity:0;transition:opacity .22s;}
+.btn-submit:hover::after{opacity:1;}
+.btn-submit span{position:relative;z-index:1;}
+.btn-submit:disabled{opacity:.55;cursor:not-allowed;}
+
+.msg{display:none;margin-top:14px;padding:14px 18px;border-radius:12px;font-size:13.5px;font-weight:500;line-height:1.5;gap:10px;align-items:flex-start;}
+.msg.ok{display:flex;background:rgba(45,138,82,.1);border:1px solid rgba(45,138,82,.3);color:#0a4020;}
+.msg.ko{display:flex;background:rgba(184,50,50,.08);border:1px solid rgba(184,50,50,.25);color:var(--error);}
+
+/* Apporteur preview */
+.apporteur-preview{
+  display:none;margin-top:8px;padding:8px 12px;
+  background:rgba(45,138,82,.08);border:1px solid rgba(45,138,82,.2);
+  border-radius:9px;font-size:13px;color:var(--g2);font-weight:600;
+}
+.apporteur-preview.visible{display:block;}
+
+footer{text-align:center;padding:28px 24px;border-top:1px solid var(--cream2);font-size:11.5px;color:#9aada2;}
+footer strong{color:var(--g2);}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="noise"></div>
+  <div class="hero-inner">
+    <div class="tag"><span class="tag-dot"></span>BAR-TH-174 · CEE Rénovation d'Ampleur</div>
+    <h1>Déposez votre dossier<br><em>rénovation globale</em></h1>
+    <p class="hero-sub">Rénovation énergétique d'ampleur d'une maison individuelle existante. Audit énergétique + 2 gestes d'isolation — saut minimum de 2 classes DPE.</p>
+    <div class="info-pills">
+      <div class="pill">✅ Maison individuelle existante</div>
+      <div class="pill">📋 Audit énergétique requis</div>
+      <div class="pill">⚡ Gain ≥ 2 classes DPE</div>
+    </div>
+  </div>
+</div>
+
+<div class="form-wrap">
+  <p class="step-label">Formulaire de dépôt</p>
+  <h2 class="step-title">Renseignez votre dossier</h2>
+
+  <form id="f" novalidate>
+
+    <!-- IDENTITÉ -->
+    <div class="card">
+      <div class="card-head"><div class="cicon">👤</div><div><div class="ctitle">Identité du bénéficiaire</div><div class="csub">Informations personnelles</div></div></div>
+      <div class="g2">
+        <div class="f"><label class="lbl">Nom <span class="r">*</span></label><input type="text" id="nom" placeholder="Dupont"><div class="ferr" id="e-nom"></div></div>
+        <div class="f"><label class="lbl">Prénom <span class="r">*</span></label><input type="text" id="prenom" placeholder="Marie"><div class="ferr" id="e-prenom"></div></div>
+        <div class="f s2">
+          <label class="lbl">Statut <span class="r">*</span></label>
+          <div class="radio-row">
+            <label class="rl" onclick="setStatut('grand_precaire',this)"><input type="radio" name="statut" value="grand_precaire"><span class="rdot"></span>Grand Précaire</label>
+            <label class="rl" onclick="setStatut('sci',this)"><input type="radio" name="statut" value="sci"><span class="rdot"></span>SCI</label>
+          </div>
+          <div class="ferr" id="e-statut"></div>
+        </div>
+        <div class="f"><label class="lbl">Téléphone <span class="r">*</span></label><input type="tel" id="tel" placeholder="06 12 34 56 78"><div class="ferr" id="e-tel"></div></div>
+        <div class="f"><label class="lbl">Email <span class="r">*</span></label><input type="email" id="email" placeholder="marie@email.fr"><div class="ferr" id="e-email"></div></div>
+        <div class="f s2"><label class="lbl">Adresse du client <span class="r">*</span></label><input type="text" id="adresse" placeholder="15 rue des Lilas, 75001 Paris"><div class="ferr" id="e-adresse"></div></div>
+      </div>
+    </div>
+
+    <!-- LOGEMENT -->
+    <div class="card">
+      <div class="card-head"><div class="cicon">🏠</div><div><div class="ctitle">Logement</div><div class="csub">Caractéristiques du bien</div></div></div>
+      <div class="g2">
+        <div class="f">
+          <label class="lbl">Type de logement <span class="r">*</span></label>
+          <select id="type_logement">
+            <option value="">— Sélectionner —</option>
+            <option value="maison_individuelle">Maison individuelle</option>
+            <option value="appartement">Appartement</option>
+            <option value="maison_jumelee">Maison jumelée</option>
+            <option value="maison_mitoyenne">Maison mitoyenne</option>
+          </select>
+          <div class="ferr" id="e-type_logement"></div>
+        </div>
+        <div class="f"><label class="lbl">Surface habitable (m²) <span class="r">*</span></label><input type="number" id="surface" placeholder="95" min="1"><div class="ferr" id="e-surface"></div></div>
+        <div class="f s2">
+          <label class="lbl">Système de chauffage existant <span class="r">*</span></label>
+          <select id="chauffage">
+            <option value="">— Sélectionner —</option>
+            <option value="gaz">Gaz</option>
+            <option value="fioul">Fioul</option>
+            <option value="electrique">Électrique</option>
+            <option value="bois">Bois / Pellet</option>
+            <option value="pompe_chaleur">Pompe à chaleur</option>
+            <option value="autre">Autre</option>
+          </select>
+          <div class="ferr" id="e-chauffage"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GESTES -->
+    <div class="card">
+      <div class="card-head"><div class="cicon">🌿</div><div><div class="ctitle">Gestes d'isolation</div><div class="csub">Sélectionnez exactement 2 gestes</div></div></div>
+      <div class="gestes-grid">
+        <label class="gc"><input type="checkbox" value="comble"><div class="gi"><div class="gico">🏔️</div><div class="gnm">Toiture / Combles</div><div class="gdesc">Combles perdus ou aménagés</div><div class="gchk"></div></div></label>
+        <label class="gc"><input type="checkbox" value="plancher_bas"><div class="gi"><div class="gico">🔲</div><div class="gnm">Plancher Bas</div><div class="gdesc">Sol sur vide sanitaire ou cave</div><div class="gchk"></div></div></label>
+        <label class="gc"><input type="checkbox" value="mur_interieur_25"><div class="gi"><div class="gico">🧱</div><div class="gnm">Mur Int. 25%</div><div class="gdesc">Murs intérieurs R≥3.7</div><div class="gchk"></div></div></label>
+      </div>
+      <p class="gcounter" id="gcounter">0 / 2 gestes sélectionnés</p>
+      <div class="ferr" id="e-gestes"></div>
+    </div>
+
+    <!-- APPORTEUR -->
+    <div class="card">
+      <div class="card-head"><div class="cicon">🤝</div><div><div class="ctitle">Apporteur d'affaires</div><div class="csub">Code transmis par votre référent</div></div></div>
+      <div class="f">
+        <label class="lbl">Code apporteur <span class="r">*</span></label>
+        <select id="code_apporteur" onchange="previewApporteur()">
+          <option value="">— Sélectionner un apporteur —</option>
+        </select>
+        <div class="apporteur-preview" id="apporteur-preview"></div>
+        <div class="ferr" id="e-code_apporteur"></div>
+      </div>
+    </div>
+
+    <!-- PJ -->
+    <div class="card">
+      <div class="card-head"><div class="cicon">📎</div><div><div class="ctitle">Pièces justificatives</div><div class="csub">Pièce d'identité + avis d'imposition obligatoires</div></div></div>
+      <div class="dropzone" id="dz">
+        <input type="file" id="fi" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx" onchange="addFiles(this.files)">
+        <div class="dico">📂</div>
+        <div class="dtxt">Glissez vos fichiers ici ou cliquez</div>
+        <div class="dhint">Pièce d'identité (CNI/passeport) + avis d'imposition — PDF, JPG, PNG — 10 Mo max</div>
+      </div>
+      <div class="flist" id="flist"></div>
+      <div class="progress-wrap" id="pwrap">
+        <div class="progress-label" id="plabel">Upload en cours…</div>
+        <div class="pbar-track"><div class="pbar-fill" id="pfill"></div></div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-submit" id="btn"><span id="btnTxt">Envoyer mon dossier →</span></button>
+    <div class="msg" id="msgOk">✅ <div><strong>Dossier envoyé !</strong> Notre équipe vous contactera sous 48h ouvrées.</div></div>
+    <div class="msg" id="msgKo">⚠️ <div id="msgKoTxt">Une erreur est survenue. Veuillez réessayer.</div></div>
+  </form>
+</div>
+
+<footer><strong>BAR-TH-174</strong> · Certificats d'Économies d'Énergie</footer>
+
+<script>
+const SUPABASE_URL  = "https://upultfflbxrghptavwvf.supabase.co";
+const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVwdWx0ZmZsYnhyZ2hwdGF2d3ZmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwNjU1MDYsImV4cCI6MjA4ODY0MTUwNn0.Uq2AnyqYJeCztqzDjUWNYk0LvhS3gGIXn3TlxQo17ug";
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+let statut=null, files=[], apporteurs=[];
+
+// Charger les apporteurs
+(async()=>{
+  const {data} = await sb.from('apporteurs').select('nom,code').eq('actif',true).order('nom');
+  apporteurs = data||[];
+  const sel = document.getElementById('code_apporteur');
+  apporteurs.forEach(a=>{
+    const o = document.createElement('option');
+    o.value = a.code;
+    o.textContent = a.code; // affiche seulement le code côté formulaire
+    sel.appendChild(o);
+  });
+})();
+
+function previewApporteur(){
+  const code = document.getElementById('code_apporteur').value;
+  const prev = document.getElementById('apporteur-preview');
+  const a = apporteurs.find(x=>x.code===code);
+  if(a){ prev.textContent = '✓ Apporteur : ' + a.nom; prev.classList.add('visible'); }
+  else { prev.classList.remove('visible'); }
+  err('code_apporteur','');
+}
+
+function setStatut(val,el){
+  statut=val;
+  document.querySelectorAll('.rl').forEach(l=>l.classList.remove('on'));
+  el.classList.add('on'); err('statut','');
+}
+
+document.querySelectorAll('.gc input').forEach(cb=>{
+  cb.addEventListener('change',()=>{
+    const checked=document.querySelectorAll('.gc input:checked');
+    if(checked.length>2){cb.checked=false;return;}
+    const n=document.querySelectorAll('.gc input:checked').length;
+    const ctr=document.getElementById('gcounter');
+    ctr.textContent=`${n} / 2 geste${n>1?'s':''} sélectionné${n>1?'s':''}`;
+    ctr.className='gcounter'+(n===2?' ok':'');
+    err('gestes','');
+  });
+});
+
+function addFiles(list){
+  for(const f of list){
+    if(f.size>10*1024*1024){alert(`${f.name} dépasse 10 Mo`);continue;}
+    if(!files.find(x=>x.name===f.name&&x.size===f.size)) files.push(f);
+  }
+  renderFiles();
+}
+function renderFiles(){
+  const fl=document.getElementById('flist'); fl.innerHTML='';
+  files.forEach((f,i)=>{
+    const d=document.createElement('div'); d.className='fitem';
+    d.innerHTML=`<span>📄 ${f.name} <small>(${(f.size/1024).toFixed(0)} Ko)</small></span><button type="button" class="frem" onclick="removeFile(${i})">✕</button>`;
+    fl.appendChild(d);
+  });
+}
+function removeFile(i){files.splice(i,1);renderFiles();}
+
+const dz=document.getElementById('dz');
+dz.addEventListener('dragover',e=>{e.preventDefault();dz.classList.add('over');});
+dz.addEventListener('dragleave',()=>dz.classList.remove('over'));
+dz.addEventListener('drop',e=>{e.preventDefault();dz.classList.remove('over');addFiles(e.dataTransfer.files);});
+
+function err(id,msg){
+  const el=document.getElementById('e-'+id); if(el) el.textContent=msg;
+  const inp=document.getElementById(id); if(inp) inp.classList.toggle('err',!!msg);
+}
+function chk(id,test,msg){
+  const v=document.getElementById(id)?.value?.trim();
+  if(!test(v)){err(id,msg);return false;}
+  err(id,'');return true;
+}
+function validate(){
+  let ok=true;
+  if(!chk('nom',    v=>v.length>=2,'Nom requis'))                           ok=false;
+  if(!chk('prenom', v=>v.length>=2,'Prénom requis'))                        ok=false;
+  if(!statut){err('statut','Choisissez un statut');ok=false;}
+  if(!chk('tel',    v=>/^[\d\s\+\-\.]{8,}$/.test(v),'Téléphone invalide')) ok=false;
+  if(!chk('email',  v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v),'Email invalide')) ok=false;
+  if(!chk('adresse',v=>v.length>=5,'Adresse requise'))                      ok=false;
+  if(!chk('type_logement',v=>v!=='','Sélectionnez un type de logement'))    ok=false;
+  if(!chk('surface',v=>parseInt(v)>0,'Surface invalide'))                   ok=false;
+  if(!chk('chauffage',v=>v!=='','Sélectionnez un chauffage'))               ok=false;
+  if(document.querySelectorAll('.gc input:checked').length<2){err('gestes','Sélectionnez 2 gestes');ok=false;}
+  if(!chk('code_apporteur',v=>v!=='','Sélectionnez un apporteur'))          ok=false;
+  return ok;
+}
+
+document.getElementById('f').addEventListener('submit',async e=>{
+  e.preventDefault();
+  document.getElementById('msgOk').className='msg';
+  document.getElementById('msgKo').className='msg';
+  if(!validate()) return;
+  const btn=document.getElementById('btn'); btn.disabled=true;
+  document.getElementById('btnTxt').textContent='Envoi en cours…';
+  try{
+    const pj_urls=[];
+    if(files.length>0){
+      document.getElementById('pwrap').style.display='block';
+      for(let i=0;i<files.length;i++){
+        const f=files[i];
+        document.getElementById('plabel').textContent=`Upload ${i+1}/${files.length} : ${f.name}`;
+        document.getElementById('pfill').style.width=`${Math.round((i/files.length)*100)}%`;
+        const ext=f.name.split('.').pop();
+        const path=`dossiers/${Date.now()}_${Math.random().toString(36).slice(2)}.${ext}`;
+        const {error:upErr}=await sb.storage.from('storage').upload(path,f,{cacheControl:'3600',upsert:false});
+        if(upErr) throw new Error(`Upload échoué : ${f.name}`);
+        pj_urls.push(path);
+      }
+      document.getElementById('pfill').style.width='100%';
+      document.getElementById('plabel').textContent='Fichiers uploadés ✓';
+    }
+    const g=[...document.querySelectorAll('.gc input:checked')].map(c=>c.value);
+    const {error:insErr}=await sb.from('formulaire_174').insert({
+      nom:document.getElementById('nom').value.trim(),
+      prenom:document.getElementById('prenom').value.trim(),
+      statut,
+      tel:document.getElementById('tel').value.trim(),
+      email:document.getElementById('email').value.trim(),
+      adresse_client:document.getElementById('adresse').value.trim(),
+      type_logement:document.getElementById('type_logement').value,
+      surface_m2:parseInt(document.getElementById('surface').value),
+      type_chauffage:document.getElementById('chauffage').value,
+      geste_1:g[0]||null,geste_2:g[1]||null,
+      pj_urls,
+      code_apporteur:document.getElementById('code_apporteur').value
+    });
+    if(insErr) throw new Error(insErr.message);
+    document.getElementById('f').reset(); files=[]; renderFiles(); statut=null;
+    document.querySelectorAll('.rl').forEach(l=>l.classList.remove('on'));
+    document.getElementById('gcounter').textContent='0 / 2 gestes sélectionnés';
+    document.getElementById('gcounter').className='gcounter';
+    document.getElementById('apporteur-preview').classList.remove('visible');
+    document.getElementById('pwrap').style.display='none';
+    document.getElementById('msgOk').className='msg ok';
+    window.scrollTo({top:document.body.scrollHeight,behavior:'smooth'});
+  }catch(ex){
+    document.getElementById('msgKoTxt').textContent=ex.message||'Erreur inattendue.';
+    document.getElementById('msgKo').className='msg ko';
+  }finally{
+    btn.disabled=false;
+    document.getElementById('btnTxt').textContent='Envoyer mon dossier →';
+  }
+});
+</script>
+</body>
+</html>
