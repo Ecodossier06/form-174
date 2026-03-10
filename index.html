@@ -170,7 +170,8 @@ footer strong{color:var(--g2);}
     <p class="hero-sub">Rénovation énergétique d'ampleur d'une maison individuelle existante. Audit énergétique + 2 gestes d'isolation — saut minimum de 2 classes DPE.</p>
     <div class="info-pills">
       <div class="pill">✅ Maison individuelle existante</div>
-
+      <div class="pill">📋 Audit énergétique requis</div>
+      <div class="pill">⚡ Gain ≥ 2 classes DPE</div>
     </div>
   </div>
 </div>
@@ -187,7 +188,6 @@ footer strong{color:var(--g2);}
       <div class="g2">
         <div class="f"><label class="lbl">Nom <span class="r">*</span></label><input type="text" id="nom" placeholder="Dupont" autocomplete="family-name"><div class="ferr" id="e-nom"></div></div>
         <div class="f"><label class="lbl">Prénom <span class="r">*</span></label><input type="text" id="prenom" placeholder="Marie" autocomplete="given-name"><div class="ferr" id="e-prenom"></div></div>
-        <div class="f s2"><label class="lbl">Prénom du déposant <span class="r">*</span></label><input type="text" id="prenom_deposant" placeholder="Prénom de la personne qui dépose le dossier" autocomplete="off"><div class="ferr" id="e-prenom_deposant"></div></div>
         <div class="f s2">
           <label class="lbl">Statut <span class="r">*</span></label>
           <div class="radio-row">
@@ -262,11 +262,16 @@ footer strong{color:var(--g2);}
         </select>
         <div class="ferr" id="e-code_apporteur"></div>
       </div>
+      <div class="f" style="margin-top:14px;">
+        <label class="lbl">Prénom du déposant <span class="r">*</span></label>
+        <input type="text" id="prenom_deposant" placeholder="Prénom de la personne qui dépose le dossier" autocomplete="off">
+        <div class="ferr" id="e-prenom_deposant"></div>
+      </div>
     </div>
 
     <!-- PJ -->
     <div class="card">
-      <div class="card-head"><div class="cicon">📎</div><div><div class="ctitle">Pièces justificatives</div><div class="csub">Pièce d'identité + avis d'imposition </div></div></div>
+      <div class="card-head"><div class="cicon">📎</div><div><div class="ctitle">Pièces justificatives</div><div class="csub">Pièce d'identité + avis d'imposition obligatoires</div></div></div>
       <div class="dropzone" id="dz">
         <input type="file" id="fi" multiple accept=".pdf,.jpg,.jpeg,.png" onchange="addFiles(this.files)">
         <div class="dico">📂</div>
@@ -432,29 +437,31 @@ document.getElementById('f').addEventListener('submit', async e=>{
 
     const g=[...document.querySelectorAll('.gc input:checked')].map(c=>c.value);
 
-    // 2. Insert dossier
-    const {data:dossier, error:insErr}=await sb.from('formulaire_174').insert({
-      nom:document.getElementById('nom').value.trim(),
-      prenom:document.getElementById('prenom').value.trim(),
-      prenom_deposant:document.getElementById('prenom_deposant').value.trim(),
-      statut,
-      tel:document.getElementById('tel').value.trim(),
-      email:document.getElementById('email').value.trim(),
-      adresse_client:document.getElementById('adresse').value.trim(),
-      type_logement:document.getElementById('type_logement').value,
-      surface_m2:parseInt(document.getElementById('surface').value),
-      type_chauffage:document.getElementById('chauffage').value,
-      geste_1:g[0]||null, geste_2:g[1]||null,
-      code_apporteur:document.getElementById('code_apporteur').value,
-      pj_urls
-    }).select().single();
+    // 2. Insert dossier via RPC
+    const {data:dossierId, error:insErr} = await sb.rpc('submit_dossier_174', {
+      p_data: {
+        nom: document.getElementById('nom').value.trim(),
+        prenom: document.getElementById('prenom').value.trim(),
+        prenom_deposant: document.getElementById('prenom_deposant').value.trim(),
+        statut,
+        tel: document.getElementById('tel').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        adresse_client: document.getElementById('adresse').value.trim(),
+        type_logement: document.getElementById('type_logement').value,
+        surface_m2: parseInt(document.getElementById('surface').value),
+        type_chauffage: document.getElementById('chauffage').value,
+        geste_1: g[0]||null, geste_2: g[1]||null,
+        code_apporteur: document.getElementById('code_apporteur').value,
+        pj_urls
+      }
+    });
     if(insErr) throw new Error(insErr.message);
 
     // 3. Insert PJ nommées dans dossier_pj
-    if(dossier && pj_urls.length>0){
+    if(dossierId && pj_urls.length>0){
       await sb.from('dossier_pj').insert(
         pj_urls.map((path,i)=>({
-          dossier_id: dossier.id,
+          dossier_id: dossierId,
           nom: files[i].name,
           path,
           taille: files[i].size
